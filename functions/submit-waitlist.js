@@ -120,30 +120,43 @@ exports.handler = async (event, context) => {
     console.log("Cleaned EU countries:", cleanedCountries);
     console.log("Custom countries:", otherCountries);
 
+    // Clean function for all string fields to remove extra quotes and trim
+    const cleanString = (value) => {
+      if (!value) return "";
+      return String(value)
+        .trim()
+        .replace(/^["']|["']$/g, "");
+    };
+
     // Prepare data for Airtable using correct field names
     const airtableData = {
       records: [
         {
           fields: {
-            "First Name": formData.firstName,
-            "Last Name": formData.lastName,
-            Email: formData.email,
-            Company: formData.company,
-            Website: formData.website,
+            "First Name": cleanString(formData.firstName),
+            "Last Name": cleanString(formData.lastName),
+            Email: cleanString(formData.email),
+            Company: cleanString(formData.company),
+            Website: cleanString(formData.website),
             "Sell Today": cleanedCountries,
             "Other Countries": otherCountries,
-            Revenue: formData.revenue,
-            Customers: formData.customers,
-            "Commit Bratislava": formData.commitBratislava,
-            "Commit Amsterdam": formData.commitAmsterdam,
-            Expectations: formData.expectations || "",
-            "Additional Information": formData.additionalInfo || "",
+            Revenue: cleanString(formData.revenue),
+            Customers: cleanString(formData.customers),
+            "Commit Bratislava": cleanString(formData.commitBratislava),
+            "Commit Amsterdam": cleanString(formData.commitAmsterdam),
+            Expectations: cleanString(formData.expectations),
+            "Additional Information": cleanString(formData.additionalInfo),
             "Submission Date": new Date().toISOString().split("T")[0],
             Status: "New",
           },
         },
       ],
     };
+
+    console.log(
+      "Final data being sent to Airtable:",
+      JSON.stringify(airtableData, null, 2)
+    );
 
     // Send to Airtable
     const airtableResponse = await fetch(
