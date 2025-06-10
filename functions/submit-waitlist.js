@@ -58,27 +58,27 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Prepare data for Airtable
+    // Prepare data for Airtable using correct field names
     const airtableData = {
       records: [
         {
           fields: {
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            email: formData.email,
-            company: formData.company,
-            website: formData.website,
-            sellToday: Array.isArray(formData.sellToday)
+            "First Name": formData.firstName,
+            "Last Name": formData.lastName,
+            Email: formData.email,
+            Company: formData.company,
+            Website: formData.website,
+            "Sell Today": Array.isArray(formData.sellToday)
               ? formData.sellToday
               : formData.sellToday.split(","),
-            revenue: formData.revenue,
-            customers: formData.customers,
-            commitBratislava: formData.commitBratislava,
-            commitAmsterdam: formData.commitAmsterdam,
-            expectations: formData.expectations || "",
-            additionalInfo: formData.additionalInfo || "",
-            submissionDate: new Date().toISOString().split("T")[0],
-            status: "New",
+            Revenue: formData.revenue,
+            Customers: formData.customers,
+            "Commit Bratislava": formData.commitBratislava,
+            "Commit Amsterdam": formData.commitAmsterdam,
+            Expectations: formData.expectations || "",
+            "Additional Information": formData.additionalInfo || "",
+            "Submission Date": new Date().toISOString().split("T")[0],
+            Status: "New",
           },
         },
       ],
