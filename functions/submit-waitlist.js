@@ -60,18 +60,65 @@ exports.handler = async (event, context) => {
 
     // Clean and prepare sellToday data
     let sellTodayArray = [];
+    let otherCountries = "";
+
     if (Array.isArray(formData.sellToday)) {
       sellTodayArray = formData.sellToday;
     } else if (typeof formData.sellToday === "string") {
       sellTodayArray = formData.sellToday.split(",");
     }
 
-    // Clean each country name: trim whitespace and remove extra quotes
-    sellTodayArray = sellTodayArray
-      .map((country) => country.trim().replace(/^["']|["']$/g, ""))
-      .filter((country) => country.length > 0);
+    // Clean each country name and separate "other" entries
+    const validEUCountries = [
+      "Austria",
+      "Belgium",
+      "Bulgaria",
+      "Croatia",
+      "Cyprus",
+      "Czech Republic",
+      "Denmark",
+      "Estonia",
+      "Finland",
+      "France",
+      "Germany",
+      "Greece",
+      "Hungary",
+      "Ireland",
+      "Italy",
+      "Latvia",
+      "Lithuania",
+      "Luxembourg",
+      "Malta",
+      "Netherlands",
+      "Poland",
+      "Portugal",
+      "Romania",
+      "Slovakia",
+      "Slovenia",
+      "Spain",
+      "Sweden",
+    ];
 
-    console.log("Cleaned sellToday array:", sellTodayArray);
+    const cleanedCountries = [];
+    const customCountries = [];
+
+    sellTodayArray.forEach((country) => {
+      const cleaned = country.trim().replace(/^["']|["']$/g, "");
+      if (cleaned.length > 0) {
+        if (validEUCountries.includes(cleaned)) {
+          cleanedCountries.push(cleaned);
+        } else if (cleaned !== "other") {
+          // This is a custom country (not in the EU list and not "other")
+          customCountries.push(cleaned);
+        }
+      }
+    });
+
+    // Join custom countries for the "Other Countries" field
+    otherCountries = customCountries.join(", ");
+
+    console.log("Cleaned EU countries:", cleanedCountries);
+    console.log("Custom countries:", otherCountries);
 
     // Prepare data for Airtable using correct field names
     const airtableData = {
@@ -83,7 +130,8 @@ exports.handler = async (event, context) => {
             Email: formData.email,
             Company: formData.company,
             Website: formData.website,
-            "Sell Today": sellTodayArray,
+            "Sell Today": cleanedCountries,
+            "Other Countries": otherCountries,
             Revenue: formData.revenue,
             Customers: formData.customers,
             "Commit Bratislava": formData.commitBratislava,
