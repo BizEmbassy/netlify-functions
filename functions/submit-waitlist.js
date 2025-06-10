@@ -58,6 +58,21 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // Clean and prepare sellToday data
+    let sellTodayArray = [];
+    if (Array.isArray(formData.sellToday)) {
+      sellTodayArray = formData.sellToday;
+    } else if (typeof formData.sellToday === "string") {
+      sellTodayArray = formData.sellToday.split(",");
+    }
+
+    // Clean each country name: trim whitespace and remove extra quotes
+    sellTodayArray = sellTodayArray
+      .map((country) => country.trim().replace(/^["']|["']$/g, ""))
+      .filter((country) => country.length > 0);
+
+    console.log("Cleaned sellToday array:", sellTodayArray);
+
     // Prepare data for Airtable using correct field names
     const airtableData = {
       records: [
@@ -68,9 +83,7 @@ exports.handler = async (event, context) => {
             Email: formData.email,
             Company: formData.company,
             Website: formData.website,
-            "Sell Today": Array.isArray(formData.sellToday)
-              ? formData.sellToday
-              : formData.sellToday.split(","),
+            "Sell Today": sellTodayArray,
             Revenue: formData.revenue,
             Customers: formData.customers,
             "Commit Bratislava": formData.commitBratislava,
