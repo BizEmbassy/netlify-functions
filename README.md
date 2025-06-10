@@ -6,7 +6,7 @@ This directory contains **only the Netlify functions** for the BizEmbassy waitli
 
 ### 1. Create a Netlify Site for Functions Only
 
-1. Create a new repository on GitHub: `BizEmbassy/bizembassy-functions`
+1. Create a new repository on GitHub: `BizEmbassy/netlify-functions`
 2. Push this `netlify-functions/` folder content to that repository
 3. Connect the repository to Netlify
 4. Configure build settings:
@@ -19,7 +19,7 @@ This directory contains **only the Netlify functions** for the BizEmbassy waitli
 In your Netlify site dashboard, go to **Site settings** → **Environment variables** and add:
 
 ```
-AIRTABLE_API_KEY=your_actual_api_key_here
+AIRTABLE_PERSONAL_ACCESS_TOKEN=your_personal_access_token_here
 AIRTABLE_BASE_ID=your_actual_base_id_here
 AIRTABLE_TABLE_NAME=Waitlist
 NODE_ENV=production
@@ -39,7 +39,7 @@ Replace `your-actual-netlify-site` with your actual Netlify site name.
 ## Architecture
 
 ```
-GitHub Pages (bizembassy.github.io/bizembassy-website)
+GitHub Pages (bizembassy.github.io/website)
     ↓ (form submission)
 Netlify Functions (your-functions-site.netlify.app/submit-waitlist)
     ↓ (API call)
@@ -60,7 +60,7 @@ cd netlify-functions/
 npm install -g netlify-cli
 
 # Create .env file with your Airtable credentials
-echo "AIRTABLE_API_KEY=your_key" > .env
+echo "AIRTABLE_PERSONAL_ACCESS_TOKEN=your_token" > .env
 echo "AIRTABLE_BASE_ID=your_base_id" >> .env
 echo "AIRTABLE_TABLE_NAME=Waitlist" >> .env
 

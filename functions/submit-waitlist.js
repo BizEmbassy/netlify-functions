@@ -90,7 +90,7 @@ exports.handler = async (event, context) => {
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${process.env.AIRTABLE_API_KEY}`,
+          Authorization: `Bearer ${process.env.AIRTABLE_PERSONAL_ACCESS_TOKEN}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(airtableData),
