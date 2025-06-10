@@ -1,0 +1,17 @@
+{
+  "name": "bizembassy-functions",
+  "version": "1.0.0",
+  "description": "Netlify functions for BizEmbassy waitlist",
+  "main": "index.js",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'No build step required'"
+  },
+  "keywords": [
+    "netlify",
+    "functions",
+    "airtable"
+  ],
+  "author": "BizEmbassy",
+  "license": "MIT"
+}

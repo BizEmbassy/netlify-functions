@@ -1,0 +1,12 @@
+[build]
+  publish = "public"
+  functions = "functions"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# Redirect all requests to the function (since we don't need a website)
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/:splat"
+  status = 200 
